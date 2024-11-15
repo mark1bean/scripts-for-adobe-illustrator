@@ -21,11 +21,12 @@
     )
         return alert('Please select some items to distribute.');
 
-    items.sort(sortByLeft);
+    // this isn't necessary, but I wondered if it might help
+    // items.sort(sortByLeft);
 
-    var points = getCenters(items),
-        medianDistanceApart = getMedianDistanceBetween(points),
-        medianItemSize = getMedianSize(items);
+    var points = getCenters(items);
+    var medianDistanceApart = getMedianDistanceBetween(points);
+    var medianItemSize = getMedianSize(items);
 
     // adjust the below object to suit your needs
     var settings = {
@@ -62,11 +63,13 @@
 
     if (settings.showUI) {
 
-        // the distribution function
-        settings.doFunction = distributeItems;
+        settings.doNotShowWarning = false;
 
         // the center position, used when scaling
         settings.center = centerOfBounds(getPointsBounds(points));
+
+        // the distribution function
+        settings.doFunction = distributeItems;
 
         var result = ui(settings);
 
@@ -131,7 +134,7 @@ function distributeItems(options) {
  * Performs `maxStep` iterations, with `damping` at each iteration.
  * More iterations tend to provide a more even, settled, distribution.
  * @author m1b
- * @version 2024-11-12
+ * @version 2024-11-15
  * @param {Object} options
  * @param {Array<PageItem>} options.items - the items to distribute.
  * @param {Number} options.spread - the spreading force; larger number means further apart
@@ -158,9 +161,19 @@ function distributePoints(options) {
         scaleFactor = options.scaleFactor || 1,
         bounds = options.keepWithinBounds || 1 != scaleFactor ? getPointsBounds(points) : undefined;
 
+    // progress bar
+    var pb = options.pb,
+        updateInterval = Math.floor(maxSteps / 10),
+        nextUpdate = updateInterval;
+
     for (var k = 0; k < maxIterations; k++) {
 
         for (var step = 0, point, otherPoint, forceX, forceY, dx, dy, distance, spread, spreadAmount; step < maxSteps; step++) {
+
+            if (pb && nextUpdate === step) {
+                pb.update(step);
+                nextUpdate += updateInterval;
+            }
 
             for (var i = 0; i < points.length; i++) {
 
@@ -211,6 +224,11 @@ function distributePoints(options) {
 
     }
 
+    if (pb && nextUpdate === step) {
+        pb.update(maxSteps * maxIterations);
+        nextUpdate += updateInterval;
+    }
+
     return points;
 
 };
@@ -224,12 +242,18 @@ function distributePoints(options) {
  */
 function getMedianDistanceBetween(points) {
 
+    // bail out after checking this many distances
+    var max = 5000;
+
     var distances = [];
 
     // calculate the distances
+    pointsLoop:
     for (var i = 0; i < points.length - 1; i++) {
 
-        for (var j = i + 1, dx, dy; j < points.length; j++) {
+        for (var j = i + 1, dx, dy; j < points.length; j++, max--) {
+
+            if (!max) break pointsLoop;
 
             dx = points[i][0] - points[j][0];
             dy = points[i][1] - points[j][1];
@@ -240,7 +264,7 @@ function getMedianDistanceBetween(points) {
     }
 
     // sort
-    distances.sort(function (a, b) { return a - b; });
+    distances.sort();
 
     return getMedianValue(distances);
 
@@ -289,24 +313,6 @@ function getMedianValue(values) {
         median = values[mid];
 
     return median;
-
-};
-
-/**
- * Returns array of center points [cx, cy] of items.
- * @author m1b
- * @version 2024-09-14
- * @param {Array<PageItem>} items - the items.
- * @returns {Array<point>}
- */
-function getCenters(items) {
-
-    var centers = [];
-
-    for (var i = 0; i < items.length; i++)
-        centers[i] = centerOfBounds(getItemBounds(items[i]), false);
-
-    return centers;
 
 };
 
@@ -543,6 +549,8 @@ function boundsDoIntersect(bounds1, bounds2, TLBR) {
 
 /**
  * Shows UI for Distribute Items.
+ * @author m1b
+ * @version 2024-11-15
  * @param {Object} settings - the settings to adjust via UI.
  * @returns {1|2} - result code
  */
@@ -557,11 +565,14 @@ function ui(settings) {
         radius: settings.radius,
     };
 
+    // keep track of the number of operations
+    var ops = 0;
+
     // used later to check if items have been moved
     settings.positions = getPositionValues();
 
     const sliderMaxValue = 100,
-        sliderMinValue = 0,
+        sliderMinValue = 1,
         sliderBounds = [5, 25, 350, 45],
 
         spreadMinValue = 0.01,
@@ -569,9 +580,15 @@ function ui(settings) {
 
         // these constants are used to map a slider value to an exponential range 0..1000
         SLIDER_SCALE_FACTOR = 6.777,
-        SLIDER_GROWTH_CONSTANT = 0.05;
+        SLIDER_GROWTH_CONSTANT = 0.05,
 
-    var w = new Window("dialog", 'Distribute Items', undefined, { closeButton: false }),
+        // show a warning when UI is configured for more than this many operations
+        OPERATIONS_WARNING_TEXT_THRESHOLD = 50000000,
+        OPERATIONS_WARNING_ALERT_THRESHOLD = 500000000,
+
+        DIALOG_WIDTH = 450;
+
+    var w = new Window("dialog", 'Distribute ' + settings.items.length + ' Items', undefined, { closeButton: false }),
 
         stack = w.add("group {orientation:'stack', alignment:['fill','fill'] }"),
         uiPage = stack.add("group {orientation:'column', alignment:['fill','fill'], visible: true }"),
@@ -620,6 +637,11 @@ function ui(settings) {
         checkboxGroup = uiPage.add('group {orientation:"row", alignment:["left","top"], alignChildren: ["left","top"], margins:[10,10,10,10], preferredSize: [120,-1] }'),
         keepWithinBoundsCheckbox = checkboxGroup.add("Checkbox { alignment:'left', text:'Keep within original bounds', margins:[0,10,0,0], value:false }"),
 
+        infoGroup = uiPage.add('group {orientation:"stack", alignment:["left","top"], alignChildren: ["fill","bottom"], margins:[10,10,10,10], preferredSize: [120,-1] }'),
+        warningText = infoGroup.add('statictext { text: "", alignment:["right","top"], preferredSize: [430,-1], justify:"right" }'),
+        // pb = infoGroup.add("progressbar", [0, 0, DIALOG_WIDTH, 6], 20, settings.positions.length),
+        pb = infoGroup.add('progressbar { bounds: [0, 0, ' + DIALOG_WIDTH + ', 6], value: 0, maxvalue: ' + settings.positions.length + ', visible: false }'),
+
         buttonGroup = uiPage.add('group {orientation:"row", alignment:["fill","bottom"], alignChildren: ["right","bottom"], margins: [10,10,10,10] }'),
         extraButtons = buttonGroup.add('group {orientation:"row", alignment:["left","bottom"], alignChildren: ["left","bottom"], margins: [0,0,0,0] }'),
         helpButton = extraButtons.add("Button { text:'Help', margins:[0,0,0,0], size:[60,25] }"),
@@ -628,7 +650,7 @@ function ui(settings) {
         cancelButton = buttonGroup.add('button', undefined, 'Cancel', { name: 'cancel' }),
         doButton = buttonGroup.add('button', undefined, 'Distribute', { name: 'ok' });
 
-    w.preferredSize.width = 450;
+    w.preferredSize.width = DIALOG_WIDTH;
 
     // assign listeners to buttons
     undoButton.onClick = undo;
@@ -662,6 +684,8 @@ function ui(settings) {
     addHelpEntry(helpContent, 'Number of Iterations', 'The number of times the distribution algorithm is re-applied to the points. Usually 1 is enough, but higher values can be very effective when `keepWithinBounds` is true.');
     addHelpEntry(helpContent, 'Keep Within Bounds', 'Whether to scale the distributed points to maintain the original points\' bounds.');
 
+    pb.update = function (n) { this.value = n; w.update(); };
+
     // update the UI
     updateUI();
 
@@ -691,6 +715,7 @@ function ui(settings) {
 
             return function () {
                 field.text = fn(this.value, decimalPlaces);
+                updateWarningText();
             };
 
         })(field, decimalPlaces);
@@ -746,6 +771,8 @@ function ui(settings) {
                     slider.enabled = true;
                     slider.value = n;
                 }
+
+                updateWarningText();
 
             };
 
@@ -825,11 +852,29 @@ function ui(settings) {
 
         updateSettings();
 
+        if (
+            !settings.doNotShowWarning
+            && ops > OPERATIONS_WARNING_ALERT_THRESHOLD
+        ) {
+
+            if (!confirm('CAUTION:\nYou are about to start a distribution that will involve ' + formatNumber(ops) + ' operations. It will be VERY slow to run, or may even fail. Do you wish to continue?'))
+                return;
+
+        }
+
+        warningText.visible = false;
+        pb.visible = true;
+        settings.pb = pb;
+        pb.maxvalue = settings.maxSteps * settings.maxIterations;
+
         // do the distribution
         settings.doFunction(settings);
 
         app.redraw();
         updateUI();
+
+        pb.visible = false;
+        warningText.visible = true;
 
     };
 
@@ -857,7 +902,26 @@ function ui(settings) {
         // update checkboxes
         keepWithinBoundsCheckbox.value = settings.keepWithinBounds;
 
+        // undo button
         undoButton.enabled = itemsAreDirty();
+
+        updateWarningText();
+
+    };
+
+    /**
+     * Sets the warning text according to how many operations are configured.
+     */
+    function updateWarningText() {
+
+        ops = settings.positions.length * settings.positions.length * Number(maxStepsField.text) * Number(maxIterationsField.text);
+
+        if (ops > OPERATIONS_WARNING_ALERT_THRESHOLD)
+            warningText.text = 'WARNING: ' + formatNumber(ops) + ' operations WILL TAKE A LONG TIME!';
+        else if (ops > OPERATIONS_WARNING_TEXT_THRESHOLD)
+            warningText.text = 'WARNING: ' + formatNumber(ops) + ' operations may take a long time!';
+        else
+            warningText.text = '';
 
     };
 
@@ -1037,6 +1101,29 @@ function copyPoints(points) {
         newPoints[i] = [points[i][0], points[i][1]];
 
     return newPoints;
+
+};
+
+/**
+ * Returns `num` formatted as string, with magnitude suffixes.
+ * @param {Number} num
+ * @returns {String}
+ */
+function formatNumber(num) {
+
+    var str = num.toString();
+
+    if (num >= 1000000000)
+        // billions
+        str = (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    else if (num >= 1000000)
+        // millions
+        str = (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    else if (num >= 1000)
+        // thousands
+        str = (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+
+    return str;
 
 };
 
