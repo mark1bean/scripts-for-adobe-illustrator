@@ -25,7 +25,7 @@
     // items.sort(sortByLeft);
 
     var points = getCenters(items);
-    var medianDistanceApart = getMedianDistanceBetween(points);
+    var medianDistanceApart = getMedianDistanceBetween(points, 5000);
     var medianItemSize = getMedianSize(items);
 
     // adjust the below object to suit your needs
@@ -237,13 +237,12 @@ function distributePoints(options) {
  * Estimates the spread value based on the median distance between `points`.
  * @author m1b
  * @version 2024-11-11
- * @param {Array<point>} options.points - array of points [x, y].
+ * @param {Array<point>} points - array of points [x, y].
+ * @param {Number} [max] - the number of measurements (default: all).
  * @returns {Number}
  */
-function getMedianDistanceBetween(points) {
+function getMedianDistanceBetween(points, max) {
 
-    // bail out after checking this many distances
-    var max = 5000;
 
     var distances = [];
 
@@ -251,9 +250,10 @@ function getMedianDistanceBetween(points) {
     pointsLoop:
     for (var i = 0; i < points.length - 1; i++) {
 
-        for (var j = i + 1, dx, dy; j < points.length; j++, max--) {
+        for (var j = i + 1, dx, dy; j < points.length; j++) {
 
-            if (!max) break pointsLoop;
+            if (max && 0 === max--)
+                break pointsLoop;
 
             dx = points[i][0] - points[j][0];
             dy = points[i][1] - points[j][1];
