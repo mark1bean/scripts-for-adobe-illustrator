@@ -2,7 +2,7 @@
 
 Adjusts the spacing between selected page items, using several parameters.
 
-![Demo of Distribute Items script](../docs/distribute-items-1.gif)
+![Demo of Distribute Items script](./docs/distribute-items-1.gif)
 
 ## Show your support
 
@@ -54,6 +54,19 @@ See [How To Install Scripts in Adobe Illustrator](https://creativepro.com/how-to
    - Caution: some parameters settings, such as a high **number of iterations** will be very slow.
 
 1. Press **Escape** or **Cancel** to finish.
+
+---
+
+## Gallery
+
+In this animation you can see what the alogithm does, one step at a time, as it pushes the squares apart by a further 1 point:
+
+![Demo of Distribute Items script](./docs/distribute-items-2.gif)
+
+The distribution algorithm causes items to be pushed apart, but you can "tighen" a distribution by using a **Scale** of less than 100%:
+
+![Demo of Distribute Items script](./docs/distribute-items-3.gif)
+
 
 ---
 
