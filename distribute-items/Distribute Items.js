@@ -25,7 +25,7 @@
     // items.sort(sortByLeft);
 
     var points = getCenters(items);
-    var medianDistanceApart = getMedianDistanceBetween(points, 5000);
+    var medianDistanceApart = getMedianDistanceBetween(points);
     var medianItemSize = getMedianSize(items);
 
     // adjust the below object to suit your needs
@@ -243,17 +243,17 @@ function distributePoints(options) {
  */
 function getMedianDistanceBetween(points, max) {
 
+    max = max || 2000;
 
     var distances = [];
 
     // calculate the distances
-    pointsLoop:
-    for (var i = 0; i < points.length - 1; i++) {
+    for (var i = 0, test = 0; i < points.length - 1; i++) {
 
-        for (var j = i + 1, dx, dy; j < points.length; j++) {
+        if (test > max)
+            break;
 
-            if (max && 0 === max--)
-                break pointsLoop;
+        for (var j = i + 1, dx, dy; j < points.length; j++, test++) {
 
             dx = points[i][0] - points[j][0];
             dy = points[i][1] - points[j][1];
@@ -639,7 +639,6 @@ function ui(settings) {
 
         infoGroup = uiPage.add('group {orientation:"stack", alignment:["left","top"], alignChildren: ["fill","bottom"], margins:[10,10,10,10], preferredSize: [120,-1] }'),
         warningText = infoGroup.add('statictext { text: "", alignment:["right","top"], preferredSize: [430,-1], justify:"right" }'),
-        // pb = infoGroup.add("progressbar", [0, 0, DIALOG_WIDTH, 6], 20, settings.positions.length),
         pb = infoGroup.add('progressbar { bounds: [0, 0, ' + DIALOG_WIDTH + ', 6], value: 0, maxvalue: ' + settings.positions.length + ', visible: false }'),
 
         buttonGroup = uiPage.add('group {orientation:"row", alignment:["fill","bottom"], alignChildren: ["right","bottom"], margins: [10,10,10,10] }'),
@@ -942,9 +941,9 @@ function ui(settings) {
     };
 
     /**
- * Returns array of items' positions [x , y].
- * @returns {Array<position>}
- */
+     * Returns array of items' positions [x , y].
+     * @returns {Array<position>}
+     */
     function getPositionValues() {
 
         var positions = [];
