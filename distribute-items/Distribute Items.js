@@ -865,6 +865,7 @@ function ui(settings) {
         pb.visible = true;
         settings.pb = pb;
         pb.maxvalue = settings.maxSteps * settings.maxIterations;
+        pb.update(1);
 
         // do the distribution
         settings.doFunction(settings);
