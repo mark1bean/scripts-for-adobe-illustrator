@@ -32,6 +32,8 @@ Adjusts the spacing between selected page items, using several parameters.
    - Click **Reset** button to revert parameters to defaults.
    - Caution: some parameters settings, such as a high **number of iterations** will be very slow.
 
+![Demo of Distribute Items script](./docs/distribute-items-2.gif)
+
 ---
 
 ## Deep Ungrouper
