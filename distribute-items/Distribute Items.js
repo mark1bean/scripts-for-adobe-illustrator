@@ -8,6 +8,7 @@
  * of the different parameters.
  *
  * @author m1b
+ * @version 2024-12-22
  * @discussion https://community.adobe.com/t5/illustrator-discussions/overlapping-objects/m-p/14967266#M426166
  */
 (function () {
