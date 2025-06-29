@@ -1,24 +1,70 @@
-# Scripts For Adobe Illustrator
+# Scripts for Adobe Illustrator
 
-Various (hopefully!) useful scripts for Adobe Illustrator.
+Some scripts I've written to do useful things in Adobe Illustrator.
 
-This repository contains the following scripts. I will be adding new scripts from time to time.
+## Contents
 
-## [Distribute Items.js](./distribute-items/README.md)
+1. [Distribute Items](#distribute-items)
+1. [Deep Ungrouper](#deep-ungrouper)
+
+---
+
+## Distribute Items
+
+[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Distribute%20Items.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--05--12-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
 
 Adjusts the spacing between selected page items, using several parameters.
 
 ![Demo of Distribute Items script](./docs/distribute-items-1.gif)
 
+1. Adjust parameters:
+   - **Spread Amount**: The amount of spreading force applied.
+   - **Damping %**: A scaling factor applied to the spread force at each step.
+   - **Radius**: Items further apart than this value, in points, will be ignored.
+   - **Number of Steps**: More steps give a more even, settled, distribution, but take longer to calculate.
+   - **Scale %**: A scaling factor applied to the point distribution. 100% means no extra scaling.
+   - **Number of Iterations**: The number of times the distribution algorithm is re-applied to the points. Often 1 is enough, but higher values can be very effective when `keepWithinBounds` is true.
+   - **Keep Within Bounds**: Whether to scale the distributed points to maintain the original points\' bounds.
+
+1. Click **Distribute** button to perform the distribution.
+   - You can perform multiple distributions, one-after-another, or clicking the **Undo** button to revert.
+   - Click **Help** button to see the parameter descriptions.
+   - Click **Reset** button to revert parameters to defaults.
+   - Caution: some parameters settings, such as a high **number of iterations** will be very slow.
+
 ---
 
-## Show your support
+## Deep Ungrouper
 
-![Profile Picture](https://avatars.githubusercontent.com/u/29587184)
+[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Deep%20Ungrouper.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--06--30-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
 
-If any of these scripts will help you, please consider supporting me:
+Script allows the removal of groups, including clipping groups and masks, at specified depths of nesting.
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=for-the-badge)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+One use case is cleaning up dirty imported content with ludicrously redundant grouping and clipping.
+
+#### Example 1
+
+Removing all groups and clipping masks at all depths:
+
+![Removing all groups and clipping masks at all depths](./docs/deep-ungrouper-demo-1.png)
+
+#### Example 2
+
+Removing all groups and clipping masks except the top level groups:
+
+![Removing all groups and clipping masks except the top level groups](./docs/deep-ungrouper-demo-2.png)
+
+#### Example 3
+
+Removing *only* groups at all depths:
+
+![Removing only groups at all depths](./docs/deep-ungrouper-demo-3.png)
+
+#### Example 4
+
+Removing groups at depths 3 and 4:
+
+![Removing groups at depths 3 and 4](./docs/deep-ungrouper-demo-4.png)
 
 ---
 
@@ -42,8 +88,16 @@ See each individual script's READ ME for specific information.
 
 ## Author
 
-All scripts here were created by Mark Bean ("[m1b](https://community.adobe.com/t5/user/viewprofilepage/user-id/13791991)"). See the individual scripts READ ME document for additional acknowledgements.
+Created by Mark Bean (Adobe Community Expert "[m1b](https://community.adobe.com/t5/user/viewprofilepage/user-id/13791991)").
+
+If any of these scripts will save you time, please consider supporting me!
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+
+![Profile picture](https://github.com/mark1bean.png)
+
+---
 
 ## License
 
-This project is open-source and available under the MIT License. See the [LICENSE](LICENSE) file for details.
+These scripts are open-source and available under the MIT License. See the [LICENSE](LICENSE) file for details.
