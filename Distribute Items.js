@@ -8,7 +8,7 @@
  * of the different parameters.
  *
  * @author m1b
- * @version 2024-12-22
+ * @version 2025-07-24
  * @discussion https://community.adobe.com/t5/illustrator-discussions/overlapping-objects/m-p/14967266#M426166
  */
 (function () {
@@ -495,7 +495,7 @@ function intersectionOfBounds(arrayOfBounds) {
     while (b = bounds.shift()) {
 
         // if doesn't intersect, bail out
-        if (!boundsDoIntersect(intersection, b))
+        if (!boundsDoIntersectIllustrator(intersection, b))
             return;
 
         var l = Math.max(intersection[0], b[0]),
@@ -517,33 +517,15 @@ function intersectionOfBounds(arrayOfBounds) {
  * @version 2024-03-10
  * @param {Array} bounds1 - bounds array.
  * @param {Array} bounds2 - bounds array.
- * @param {Boolean} [TLBR] - whether bounds arrays are interpreted as [t, l, b, r] or [l, t, r, b] (default: based on app).
  * @returns {Boolean}
  */
-function boundsDoIntersect(bounds1, bounds2, TLBR) {
+function boundsDoIntersectIllustrator(bounds1, bounds2) {
 
-    if (undefined == TLBR)
-        TLBR = (/indesign/i.test(app.name));
-
-    return !(
-
-        TLBR
-
-            // TLBR
-            ? (
-                bounds2[0] > bounds1[2]
-                || bounds2[1] > bounds1[3]
-                || bounds2[2] < bounds1[0]
-                || bounds2[3] < bounds1[1]
-            )
-
-            // LTRB
-            : (
-                bounds2[0] > bounds1[2]
-                || bounds2[1] < bounds1[3]
-                || bounds2[2] < bounds1[0]
-                || bounds2[3] > bounds1[1]
-            )
+    return (
+        bounds2[0] > bounds1[2]
+        || bounds2[1] < bounds1[3]
+        || bounds2[2] < bounds1[0]
+        || bounds2[3] > bounds1[1]
     );
 
 };
@@ -703,8 +685,8 @@ function ui(settings) {
      * `onChanging` event of an SUI Slider, such that
      * when the slider is changed, `field` is updated.
      * @param {SUI EditText Control} field - the field to set.
-     * @param {Function} [valueFunction] - an optional custom function for converting the field text (default: Number).
-     * @param {Number} decimalPlaces - the slider max value.
+     * @param {Function} [valueFunction] - an optional custom function for converting the field text (default: nothing).
+     * @param {Number} decimalPlaces - the number of decimal places for the value.
      * @returns {Function}
      */
     function getSliderOnChangingFunction(field, valueFunction, decimalPlaces) {
