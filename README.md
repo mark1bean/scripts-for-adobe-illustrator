@@ -6,6 +6,7 @@ Some scripts I've written to do useful things in Adobe Illustrator.
 
 1. [Distribute Items](#distribute-items)
 1. [Deep Ungrouper](#deep-ungrouper)
+1. [Page Switcher](#page-switcher)
 
 ---
 
@@ -70,21 +71,28 @@ Removing groups at depths 3 and 4:
 
 ---
 
+## Page Switcher
+
+[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Page%20Switcher.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-08-01](https://img.shields.io/badge/Version-2025--08--01-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+
+A simple interface to change the page of a multi-page placed .pdf or .ai file.
+
+Just select the placed graphics, run the script and click forward or backwards to switch pages.
+
+![Demo of Page Switcher script](./docs/page-switcher-1.gif)
+
+---
+
 ## Installation
 
-#### Step 1: Download the scripts
+Step 1: Download the individual scripts (see buttons under script names), or
+[![Download](https://img.shields.io/badge/Download_all_scripts_(.zip)-*_FREE!_*-F50?style=flat-square)](https://github.com/mark1bean/scripts-for-adobe-indesign/archive/refs/heads/main.zip)
 
-To install this script, first download this repository (zipped):
+(Note: If the script shows as raw text in the browser, save it to your computer with the extension ".js".)
 
-[![Download](https://img.shields.io/badge/download-latest-blue.svg?style=for-the-badge)](https://github.com/mark1bean/scripts-for-adobe-illustrator/archive/refs/heads/main.zip)
-
-#### Step 2: Place the scripts in the appropriate folder
-
-Expand the zipped file and move the downloaded scripts to Illustrator's scripts folder.
+Step 2: Expand the zipped file and move the downloaded scripts to Illustrator's scripts folder.
 
 See [How To Install Scripts in Adobe Illustrator](https://creativepro.com/how-to-install-scripts-in-adobe-illustrator).
-
-See each individual script's READ ME for specific information.
 
 ---
 
