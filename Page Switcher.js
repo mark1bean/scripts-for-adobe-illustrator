@@ -120,7 +120,7 @@ function switchPageOfPlacedPDF(doc, placedPDF, delta, pageNumber) {
 /**
  * Returns the page number of `placedImage`.
  * @author CarlosCanto
- * @version 2025-08-01
+ * @version 2025-08-11
  * @param {PlacedItem} placedItem
  * @returns {Number}
  */
@@ -134,7 +134,7 @@ function getPlacedPDFPageNumber(placedItem) {
 
     placedItem.relink(placedItem.file);
 
-    return app.preferences.getIntegerPreference("plugin/PDFImport/PageNumber");
+    return app.preferences.PDFFileOptions.pageToOpen;
 
 };
 
