@@ -90,7 +90,7 @@ Just select the placed graphics, run the script and click forward or backwards t
 
 Attempts to join together the selected paths where points overlap.
 
-Good for cleaning up paths broken paths (a single path is actually broken into separate segments).
+Good for cleaning up paths broken paths (ie. it looks like a single path, but is actually broken into separate segments).
 
 Just select the paths to join and run the script.
 
