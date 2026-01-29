@@ -7,12 +7,13 @@ Some scripts I've written to do useful things in Adobe Illustrator.
 1. [Distribute Items](#distribute-items)
 1. [Deep Ungrouper](#deep-ungrouper)
 1. [Page Switcher](#page-switcher)
+1. [Join Path Items](#join-path-items)
 
 ---
 
 ## Distribute Items
 
-[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Distribute%20Items.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--05--12-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+[![Download Distribute Items script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Distribute%20Items.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--05--12-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
 
 Adjusts the spacing between selected page items, using several parameters.
 
@@ -39,7 +40,7 @@ Adjusts the spacing between selected page items, using several parameters.
 
 ## Deep Ungrouper
 
-[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Deep%20Ungrouper.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--06--30-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+[![Download Deep Ungrouper script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Deep%20Ungrouper.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-05-12](https://img.shields.io/badge/Version-2025--06--30-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
 
 Script allows the removal of groups, including clipping groups and masks, at specified depths of nesting.
 
@@ -73,13 +74,25 @@ Removing groups at depths 3 and 4:
 
 ## Page Switcher
 
-[![Download Copy Things script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Page%20Switcher.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-08-01](https://img.shields.io/badge/Version-2025--08--01-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+[![Download Page Switcher script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Page%20Switcher.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2025-08-01](https://img.shields.io/badge/Version-2025--08--01-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
 
 A simple interface to change the page of a multi-page placed .pdf or .ai file.
 
 Just select the placed graphics, run the script and click forward or backwards to switch pages.
 
 ![Demo of Page Switcher script](./docs/page-switcher-1.gif)
+
+---
+
+## Join Path Items
+
+[![Download Join Path Items script](https://img.shields.io/badge/Download_Script-*_FREE!_*_-F50?style=flat-square)](https://raw.githubusercontent.com/mark1bean/scripts-for-adobe-illustrator/main/Join%20Path%20Items.js)   ![Language: ExtendScript](https://img.shields.io/badge/Language-ExtendScript-99B?style=flat-square)   ![Version: 2024-07-25](https://img.shields.io/badge/Version-2024--07--25-5A5?style=flat-square)   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue?style=flat-square)](https://www.paypal.com/donate?hosted_button_id=SBQHVWHSSTA9Q)
+
+Attempts to join together the selected paths where points overlap.
+
+Good for cleaning up paths broken paths (a single path is actually broken into separate segments).
+
+Just select the paths to join and run the script.
 
 ---
 
