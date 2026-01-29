@@ -94,6 +94,8 @@ Good for cleaning up paths broken paths (a single path is actually broken into s
 
 Just select the paths to join and run the script.
 
+![Demo of Join Path Items script](./docs/join-path-items-demo.gif)
+
 ---
 
 ## Installation
